@@ -5,6 +5,7 @@
     <title>CNVDashboard</title>
     <link rel="stylesheet" href="/css/style.css" media="screen" title="no title">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-grid/4.0.0/ui-grid.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js
 " charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-touch.js"></script>
@@ -23,12 +24,58 @@
 
 
   </head>
-  <body>
-    <a ui-sref='nameOfState'>First Test State</a>
+  <body ng-controller = "dashController">
+    <!-- <a ui-sref='nameOfState'>First Test State</a>
     <main ui-view>
 
 
-    </main>
+    </main> -->
+    <div class="header">
+      Skus in the System: {{allSkus.length}}
+      <br>
+      Shoes in System: {{allShoes.length}}
+    </div>
+
+    <div class = "input-file">
+      <input type="file" import-sheet-js="" opts="gridOptions" multiple="false"  />
+      <!-- <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid"></div> -->
+    </div>
+
+    <div class="bar-and-graph">
+      <div class="left-bar">
+        <button type="button" name="button" ng-repeat= "skuAttributes in activeSku.attributes track by $index" ng-click = 'makeActiveAttribute($index)'>
+          {{skuAttributes}}
+        </button>
+      </div>
+      <!-- <div style="clear: both;"></div> -->
+      <div class="graph-display-area">
+        <br>
+        <p style="text-align: center">
+          Sku: {{activeSku.sku}} Attribute: {{activeSkuActiveAttribute}}
+        </p>
+        <canvas id="bar" class="chart-horizontal-bar" chart-data="uniqueSkuAttributeValuesCounts" chart-labels="uniqueSkuAttributeValues"></canvas>
+
+        <!-- <div class="metrics" ng-repeat = "value in uniqueSkuAttributeValues track by $index">
+        {{value}} {{uniqueSkuAttributeValuesCounts[$index]}}
+        </div> -->
+      </div>
+    </div>
+    <div style="clear: both;"></div>
+
+    <div class="shoe-bar">
+      <button type="button" name="button">All Skus
+        <div class="" style="color: blue">
+          ({{allShoes.length}})
+        </div>
+      </button>
+      <button class="" ng-repeat= "sku in allSkus" ng-click= "makeActiveSku(sku)">
+        {{sku.sku}}
+        <div class="" style="color: blue">
+          ({{sku.shoes.length}})
+
+        </div>
+      </button>
+    </div>
 
   </body>
 </html>

@@ -1,15 +1,16 @@
 (function(){
-  var app = angular.module('boilerApp', ['ui.router','ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'chart.js']).config(MainRouter);
-  MainRouter.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
-  function MainRouter($stateProvider, $urlRouterProvider, $locationProvider) {
-    $stateProvider
-    .state('nameOfState', {
-      url: '/nameOfState',
-      templateUrl: 'templates/dashTemplate.html',
-      controller: 'dashController',
-      controllerAs: 'dash'
-    });
-  }
+  var app = angular.module('boilerApp', ['ui.router','ngAnimate', 'ngTouch', 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'chart.js'])
+  // .config(MainRouter);
+  // MainRouter.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
+  // function MainRouter($stateProvider, $urlRouterProvider, $locationProvider) {
+  //   $stateProvider
+  //   .state('nameOfState', {
+  //     url: '/nameOfState',
+  //     templateUrl: 'templates/dashTemplate.html',
+  //     controller: 'dashController',
+  //     controllerAs: 'dash'
+  //   });
+  // }
   app.config(['ChartJsProvider', function (ChartJsProvider) {
     // Configure all charts
     ChartJsProvider.setOptions({

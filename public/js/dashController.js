@@ -66,6 +66,14 @@
           $scope.addNewSkus(i);
         }
         if (i == $scope.importedSkus.length - 1) {
+          function compare(a,b) {
+          if (a.shoes.length > b.shoes.length)
+            return -1;
+          if (a.shoes.length < b.shoes.length)
+            return 1;
+          return 0;
+          }
+          $scope.allSkus.sort(compare);
           self.getShoes();
           $scope.makeActiveSku($scope.allSkus[0])
         }
@@ -81,6 +89,15 @@
       $http.get('/api/skus/')
       .then(function(response) {
         $scope.allSkus = response.data;
+        function compare(a,b) {
+        if (a.shoes.length > b.shoes.length)
+          return -1;
+        if (a.shoes.length < b.shoes.length)
+          return 1;
+        return 0;
+        }
+        $scope.allSkus.sort(compare);
+
         if ($scope.allSkus[0]) {
           $scope.makeActiveSku($scope.allSkus[0]);
         }
