@@ -103,16 +103,49 @@
     this.getShoes();
 
     $scope.makeActiveSku = function(sku) {
-      console.log("hello");
-      $scope.activeSku = sku;
-      $scope.activeSkuAttributes = sku.attributes;
-      $scope.makeActiveAttribute(7);
+      $http.get(`/api/skus/${sku._id}`)
+      .then(function(response){
+        $scope.activeSku = response.data;
+        $scope.makeActiveAttribute(7);
+      })
+      .catch(function(err) {
+        console.log('err', err);
+      })
+      // $scope.activeSku = sku;
+
+      // $scope.activeShoes = //all the shoes that have the _id that are in the sku.shoes array
     }
 
+    $scope.activeSkuActiveAttributeArrayRaw = [];
     $scope.makeActiveAttribute = function(index) {
-      $scope.activeSkuActiveAttribute = $scope.activeSkuAttributes[index];
+      $scope.activeSkuActiveAttributeArrayRaw = [];
+      $scope.activeSkuActiveAttribute = $scope.activeSku.attributes[index];
+      for (var i = 0; i < $scope.activeSku.shoes.length; i++) {
+        $scope.activeSkuActiveAttributeArrayRaw.push($scope.activeSku.shoes[i].data[$scope.activeSkuActiveAttribute]);
+      }
+
+      function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      }
+
+      $scope.uniqueSkuAttributeValues = $scope.activeSkuActiveAttributeArrayRaw.filter( onlyUnique ); // returns ['a', 1, 2, '1']
+      // console.log("This is the unique values: " + JSON.stringify($scope.uniqueSkuAttributeValues));
+      $scope.uniqueSkuAttributeValuesCounts = [];
+      for (var i = 0; i < $scope.uniqueSkuAttributeValues.length; i++) {
+        var count = 0;
+        for (var j = 0; j < $scope.activeSkuActiveAttributeArrayRaw.length; j++) {
+          if ($scope.activeSkuActiveAttributeArrayRaw[j] == $scope.uniqueSkuAttributeValues[i])
+          count++
+        }
+        $scope.uniqueSkuAttributeValuesCounts.push(count)
+      }
+      console.log("this is the unique values: " + JSON.stringify($scope.uniqueSkuAttributeValues));
+      console.log("this is the unique value counts: " + JSON.stringify($scope.uniqueSkuAttributeValuesCounts));
+
       //this should trigger generating a pie graph
     }
+    this.findSku = function() {
+    };
     // this.addNewSku = function(sku_shoe) {
     //   $http.post('/api/skus', sku_shoe)
     //   .then(function(response) {
@@ -143,14 +176,6 @@
     //     console.log(response);
     //   })
     // }
-    // this.findSku = function() {
-    //     $http.get(`/api/skus/${self.activeSkuId}`)
-    //     .then(function(response){
-    //       self.activeSku = response.data;
-    //     }).catch(function(err) {
-    //       console.log('err', err);
-    //     })
-    // };
     // this.findSku();
 
     this.updateActiveSku = function () {

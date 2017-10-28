@@ -10,14 +10,21 @@ Number of Skus in the System: {{allSkus.length}}
 
 <div class="bar-and-graph">
   <div class="left-bar">
-    <button type="button" name="button" ng-repeat= "skuAttributes in activeSkuAttributes track by $index" ng-click = 'makeActiveAttribute($index)'>
+    <button type="button" name="button" ng-repeat= "skuAttributes in activeSku.attributes track by $index" ng-click = 'makeActiveAttribute($index)'>
       {{skuAttributes}}
     </button>
   </div>
   <!-- <div style="clear: both;"></div> -->
   <div class="graph-display-area">
-    this is where the graph area is displayed
-    {{activeSkuActiveAttribute}}
+    <br>
+    <p style="text-align: center">
+      Looking at Sku: {{activeSku.sku}}  with attribute: {{activeSkuActiveAttribute}}
+    </p>
+    <canvas id="bar" class="chart-horizontal-bar" chart-data="uniqueSkuAttributeValuesCounts" chart-labels="uniqueSkuAttributeValues"></canvas>
+
+    <!-- <div class="metrics" ng-repeat = "value in uniqueSkuAttributeValues track by $index">
+    {{value}} {{uniqueSkuAttributeValuesCounts[$index]}}
+    </div> -->
   </div>
 </div>
 <div style="clear: both;"></div>

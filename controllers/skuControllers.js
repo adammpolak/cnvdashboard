@@ -110,7 +110,12 @@ router.get('/:pId', function(req, res){
   Sku.findById(req.params.pId).exec()
   .then(function(sku){
     console.log(sku);
-    res.json(sku);
+    Shoe.find({
+    '_id': { $in: sku.shoes}
+    }, function(err, docs){
+      sku.shoes = docs;
+      res.json(sku);
+    });
   })
   .catch(function(err){
     console.log(err);
