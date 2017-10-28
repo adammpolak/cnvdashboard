@@ -64,7 +64,8 @@ function SheetJSExportService(uiGridExporterService) {
 
 var SheetJSImportDirective = function() {
 	return {
-		scope: { opts: '=' },
+		//scope: { opts: '=' },
+		scope: false,
 		link: function ($scope, $elm, $attrs) {
 			$elm.on('change', function (changeEvent) {
 				var reader = new FileReader();
@@ -75,29 +76,46 @@ var SheetJSImportDirective = function() {
 					var wb = XLSX.read(bstr, {type:'binary'});
 
 					/* grab first sheet */
-					var wsname = wb.SheetNames[0];
-					var ws = wb.Sheets[wsname];
+					for (var j = 0; j < wb.SheetNames.length - 1; j++) {
+						var wsname = wb.SheetNames[j];
+						var ws = wb.Sheets[wsname];
 
-					/* grab first row and generate column headers */
-					var aoa = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, range:3});
-					var cols = [];
-					for(var i = 0; i < aoa[0].length; ++i) cols[i] = { field: aoa[0][i] };
-
-					/* generate rest of the data */
-					var data = [];
-					for(var r = 1; r < aoa.length; ++r) {
-						data[r-1] = {};
-						for(i = 0; i < aoa[r].length; ++i) {
-							if(aoa[r][i] == null) continue;
-							data[r-1][aoa[0][i]] = aoa[r][i]
+						/* grab first row and generate column headers */
+						var aoa = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, range:2});
+						var cols = [];
+						// for(var i = 0; i < aoa[0].length; ++i) cols[i] = { field: aoa[0][i] };
+						for(var i = 0; i < aoa[0].length; ++i) cols[i] = aoa[0][i];
+						/* generate rest of the data */
+						var data = [];
+						for(var r = 1; r < aoa.length; ++r) {
+							data[r-1] = {};
+							for(i = 0; i < aoa[r].length; ++i) {
+								if(aoa[r][i] == null) continue;
+								data[r-1][aoa[0][i]] = aoa[r][i]
+							}
 						}
-					}
+						// console.log(cols);
+						// console.log(data);
+						// console.log(data.length);
+						// for (var i = 0; i < data.length; i++) {
+						// 	console.log(data[i].length);
+						// 	for (var j = 0; j < data[i].length; j++) {
+						// 		betterdata.push(data[i][j])
+						// 	}
+						// }
+						// betterdata.push(aoa[r][i]);
+						/* update scope */
+						$scope.$apply(function() {
+							$scope.gridOptions.columnDefs = cols;
+							$scope.gridOptions.data = data;
+							$scope.headers = cols;
+							$scope.rows = data;
+							$scope.wsname = wsname;
+						});
+						$scope.runthis();
 
-					/* update scope */
-					$scope.$apply(function() {
-						$scope.opts.columnDefs = cols;
-						$scope.opts.data = data;
-					});
+					}
+					$scope.addNewSkus(0);
 				};
 
 				reader.readAsBinaryString(changeEvent.target.files[0]);

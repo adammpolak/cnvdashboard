@@ -1,0 +1,29 @@
+.shoe-bar {
+  overflow: scroll;
+  white-space: nowrap;
+}
+
+.shoe-bar button {
+  display: inline-block;
+  width: auto;
+}
+
+
+.left-bar {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 600px;
+  float: left;
+}
+
+.left-bar button {
+  display: inline-block;
+}
+
+.graph-display-area {
+  overflow: hidden;
+  width: auto;
+  height: 600px;
+  background-color: red;
+}
