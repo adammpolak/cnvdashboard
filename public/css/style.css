@@ -63,3 +63,15 @@ border-bottom: 2px solid black;
 p {
   font-family: 'Roboto', sans-serif;
 }
+
+html {
+  background: url('https://s3-us-west-2.amazonaws.com/adamsprojectbucket/image.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/*body {
+  background-image: url("http://logok.org/wp-content/uploads/2014/03/Converse-logo-2017-logotype-1024x768.png");
+}*/
