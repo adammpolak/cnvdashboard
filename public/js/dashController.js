@@ -46,6 +46,7 @@
       var shoes = $scope.rows;
       var attributes = $scope.headers;
       var sku = {
+        name: $scope.skuname,
         sku: $scope.wsname,
         attributes: attributes,
         shoes: shoes
@@ -75,7 +76,8 @@
           }
           $scope.allSkus.sort(compare);
           self.getShoes();
-          $scope.makeActiveSku($scope.allSkus[0])
+          // $scope.makeActiveSku($scope.allSkus[0])
+          $scope.compareAllSkus()
         }
       })
       .catch(function(err) {
@@ -99,7 +101,8 @@
         $scope.allSkus.sort(compare);
 
         if ($scope.allSkus[0]) {
-          $scope.makeActiveSku($scope.allSkus[0]);
+          // $scope.makeActiveSku($scope.allSkus[0]);
+          $scope.compareAllSkus();
         }
       })
       .catch(function(err) {
@@ -124,13 +127,22 @@
       .then(function(response){
         $scope.activeSku = response.data;
         $scope.makeActiveAttribute(7);
+        $scope.singleSku = true;
       })
       .catch(function(err) {
         console.log('err', err);
       })
-      // $scope.activeSku = sku;
-
-      // $scope.activeShoes = //all the shoes that have the _id that are in the sku.shoes array
+    }
+    $scope.compareAllSkus = function() {
+      var skulabels = [];
+      var skuvalues = [];
+      for (var i = 0; i < $scope.allSkus.length; i++) {
+        skulabels.push($scope.allSkus[i].name);
+        skuvalues.push($scope.allSkus[i].shoes.length);
+      }
+      $scope.labels = skulabels;
+      $scope.values = skuvalues;
+      $scope.singleSku = false;
     }
 
     $scope.activeSkuActiveAttributeArrayRaw = [];
@@ -156,13 +168,20 @@
         }
         $scope.uniqueSkuAttributeValuesCounts.push(count)
       }
-      console.log("this is the unique values: " + JSON.stringify($scope.uniqueSkuAttributeValues));
-      console.log("this is the unique value counts: " + JSON.stringify($scope.uniqueSkuAttributeValuesCounts));
-
-      //this should trigger generating a pie graph
+      $scope.values = $scope.uniqueSkuAttributeValuesCounts;
+      $scope.labels = $scope.uniqueSkuAttributeValues;
     }
-    this.findSku = function() {
-    };
+
+    $scope.deleteData = function() {
+      $http.delete(`/api/skus/`)
+      .then(function(response){
+        $scope.allSkus = [];
+        $scope.values = [];
+        $scope.labels = [];
+        $scope.allShoes = [];
+        $scope.singleSku = false;
+      })
+    }
     // this.addNewSku = function(sku_shoe) {
     //   $http.post('/api/skus', sku_shoe)
     //   .then(function(response) {

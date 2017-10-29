@@ -37,6 +37,7 @@ router.post('/', function(req, res){
   req.body.attributes = req.body.attributes.filter( onlyUnique ); // returns ['a', 1, 2, '1']
 
   var sku = new Sku ({
+    name: req.body.name,
     sku: req.body.sku,
     attributes: req.body.attributes,
     shoes: []
@@ -129,6 +130,22 @@ router.put('/', function(req, res){
   .then(function(sku){
     console.log(sku);
     res.json(sku);
+  })
+  .catch(function(err) {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+router.delete('/', function(req, res){
+  Shoe.collection.drop()
+  .then(function(sku){
+    console.log(sku);
+    Sku.collection.drop()
+    .then(function(){
+
+      res.json(sku);
+    })
   })
   .catch(function(err) {
     console.log(err);

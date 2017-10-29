@@ -38,11 +38,12 @@
 
     <div class = "input-file">
       <input type="file" import-sheet-js="" opts="gridOptions" multiple="false"  />
+      <button type="button" name="button" ng-click="deleteData()">delete data</button>
       <!-- <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid"></div> -->
     </div>
 
     <div class="bar-and-graph">
-      <div class="left-bar">
+      <div class="left-bar" ng-if="singleSku" >
         <button type="button" name="button" ng-repeat= "skuAttributes in activeSku.attributes track by $index" ng-click = 'makeActiveAttribute($index)'>
           {{skuAttributes}}
         </button>
@@ -50,10 +51,13 @@
       <!-- <div style="clear: both;"></div> -->
       <div class="graph-display-area">
         <br>
-        <p style="text-align: center">
-          Sku: {{activeSku.sku}} Attribute: {{activeSkuActiveAttribute}}
+        <p style="text-align: center" ng-if="singleSku">
+          {{activeSku.name}} <br>Attribute: {{activeSkuActiveAttribute}}
         </p>
-        <canvas id="bar" class="chart-horizontal-bar" chart-data="uniqueSkuAttributeValuesCounts" chart-labels="uniqueSkuAttributeValues"></canvas>
+        <p style="text-align: center" ng-if="!singleSku">
+          Comparing All Skus
+        </p>
+        <canvas id="bar" class="chart-horizontal-bar" chart-data="values" chart-labels="labels"></canvas>
 
         <!-- <div class="metrics" ng-repeat = "value in uniqueSkuAttributeValues track by $index">
         {{value}} {{uniqueSkuAttributeValuesCounts[$index]}}
@@ -63,13 +67,13 @@
     <div style="clear: both;"></div>
 
     <div class="shoe-bar">
-      <button type="button" name="button">All Skus
+      <button type="button" name="button" ng-click="compareAllSkus()">All Skus
         <div class="" style="color: blue">
           ({{allShoes.length}})
         </div>
       </button>
       <button class="" ng-repeat= "sku in allSkus" ng-click= "makeActiveSku(sku)">
-        {{sku.sku}}
+        {{sku.name}}
         <div class="" style="color: blue">
           ({{sku.shoes.length}})
 

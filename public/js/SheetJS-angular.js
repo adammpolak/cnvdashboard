@@ -82,9 +82,16 @@ var SheetJSImportDirective = function() {
 
 						/* grab first row and generate column headers */
 						var aoa = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, range:2});
+						var frank = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, range:1});
+
 						var cols = [];
+						var frankcols = [];
 						// for(var i = 0; i < aoa[0].length; ++i) cols[i] = { field: aoa[0][i] };
 						for(var i = 0; i < aoa[0].length; ++i) cols[i] = aoa[0][i];
+						for(var i = 0; i < frank[0].length; ++i) frankcols[i] = frank[0][i];
+						var skuuncleaned = frankcols[1];
+						var skuname = frankcols[1].substring(0, frankcols[1].indexOf('【'));
+
 						/* generate rest of the data */
 						var data = [];
 						for(var r = 1; r < aoa.length; ++r) {
@@ -111,6 +118,7 @@ var SheetJSImportDirective = function() {
 							$scope.headers = cols;
 							$scope.rows = data;
 							$scope.wsname = wsname;
+							$scope.skuname = skuname;
 						});
 						$scope.runthis();
 
