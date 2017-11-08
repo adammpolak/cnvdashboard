@@ -92,6 +92,10 @@ var SheetJSImportDirective = function() {
 						var skuuncleaned = frankcols[1];
 						var skuname = frankcols[1].substring(0, frankcols[1].indexOf('【'));
 
+						if (skuname == "") {
+							skuname = frank[0][1].substring(0, frank[0][1].indexOf('['));
+						}
+
 						/* generate rest of the data */
 						var data = [];
 						for(var r = 1; r < aoa.length; ++r) {
